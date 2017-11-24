@@ -1,4 +1,4 @@
-## Homework 8
+## Homework 9
 ## By James Hicks
 1. I believe its a mixture of both. Human error can lead to unforseen problems escpecially during the implementation phase and the testing phase. This can lead to people having to change their plans for the software development process depending on what human error happened. Changing requirements can also mess with the flow of software development, you could be working towards finishing the project only to find out that you need an additional requirement added leading to you having to redo some of the software steps.
 
