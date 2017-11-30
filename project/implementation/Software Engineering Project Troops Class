@@ -1,0 +1,187 @@
+
+public class Troops
+{
+    public String troopName;
+    public int currentHealth;
+    public int maxHealth;
+    public int moveSpace;
+    public int range;
+    public int damage;
+    public boolean status;
+    public int buyValue;
+    public int sellValue;
+    public boolean hasMoved;
+    public boolean hasAttacked;
+    public int x;
+    public int y;
+    public String playerTag;
+    public Troops()
+    {
+        troopName = "soldier";
+        currentHealth = 100;
+        maxHealth = 100;
+        moveSpace = 1;
+        range = 1;
+        damage = 10;
+        status = true;
+        buyValue = 100;
+        sellValue = 100;
+    }
+    public Troops(String name,String tag){
+        switch(name){
+            case "footman" :
+                troopName = "footman";
+                currentHealth = 50;
+                maxHealth = 50;
+                moveSpace = 1;
+                range = 1;
+                damage = 10;
+                status = true;
+                buyValue = 100;
+                sellValue = 75;
+                playerTag =tag+"F";
+                hasMoved = false;
+                hasAttacked = false;
+                break;
+            case "knight" :
+                troopName = "knight";
+                currentHealth = 100;
+                maxHealth = 100;
+                moveSpace = 3;
+                range = 1;
+                damage = 20;
+                status = true;
+                buyValue = 200;
+                sellValue = 150;
+                playerTag =tag+"K";
+                hasMoved = false;
+                hasAttacked = false;
+                break;
+            case "longbowman" :
+                troopName = "longbowman";
+                currentHealth = 40;
+                maxHealth = 40;
+                moveSpace = 1;
+                range = 3;
+                damage = 10;
+                status = true;
+                buyValue = 100;
+                sellValue = 75;
+                playerTag =tag+"L";
+                hasMoved = false;
+                hasAttacked = false;
+                break;
+        }
+    }
+    public Troops(String newTroopName, int newCurrentHealth, int newMaxHealth, int newMoveSpace, int newRange, int newDamage, boolean newStatus, int newBuyValue, int newSellValue){
+        troopName = newTroopName;
+        currentHealth = newCurrentHealth;
+        maxHealth = newMaxHealth;
+        moveSpace = newMoveSpace;
+        range = newRange;
+        damage = newDamage;
+        status = newStatus;
+        buyValue = newBuyValue;
+        sellValue = newSellValue;
+    }
+    public void setTroopName(String newTroopName){
+        troopName = newTroopName;
+    }
+    public String getTroopName(){
+        return troopName;
+    }
+    public void setCurrentHealth(int newCurrentHealth){
+        currentHealth = newCurrentHealth;
+    }
+    public int getCurrentHealth(){
+        return currentHealth;
+    }
+     public void setMaxHealth(int newMaxHealth){
+        maxHealth = newMaxHealth;
+    }
+    public int getMaxHealth(){
+        return maxHealth;
+    }
+     public void setMoveSpace(int newMoveSpace){
+        moveSpace = newMoveSpace;
+    }
+    public int getMoveSpace(){
+        return moveSpace;
+    }
+    public void setRange(int newRange){
+        range = newRange;
+    }
+    public int getRange(){
+        return range;
+    }
+    public void setDamage(int newDamage){
+        damage = newDamage;
+    }
+    public int getDamage(){
+        return damage;
+    }
+    public void setStatus(boolean newStatus){
+        status = newStatus;
+    }
+    public boolean getStatus(){
+        return status;
+    }
+    public void setBuyValue(int newBuyValue){
+        buyValue = newBuyValue;
+    }
+    public int getBuyValue(){
+        return buyValue;
+    }
+    public void setSellValue(int newSellValue){
+        sellValue = newSellValue;
+    }
+    public int getSellValue(){
+        return sellValue;
+    }
+    public void setMoved(boolean moved){
+        hasMoved = moved;
+    }
+    public boolean getMoved(){
+        return hasMoved;
+    }
+    public void setAttacked(boolean attacked){
+        hasAttacked = attacked;
+    }
+    public boolean getAttacked(){
+        return hasAttacked;
+    }
+    public void setX(int newX){
+        x = newX;
+    }
+    public int getX(){
+        return x;
+    }
+    public void setY(int newY){
+        y = newY;
+    }
+    public int getY(){
+        return y;
+    }
+    public void setPlayer(String newPlayer){
+        playerTag = newPlayer;
+    }
+    public String getPlayer(){
+        return playerTag;
+    }
+    public void gamePlayPrint(){
+        System.out.println("Troop Name: " + getTroopName()
+        + "\nCurrent Health: " + getCurrentHealth()
+        + "\nMax Health: " + getMaxHealth()
+        + "\nMove Space: " + getMoveSpace()
+        + "\nRange: " + getRange()
+        + "\nDamage: " + getDamage()
+        + "\nAlive: " + getStatus()
+        + "\nHasMoved: " + getMoved()
+        + "\nHasAttacked: "+ getAttacked());
+        
+        System.out.println();
+    }
+    public String toString(){
+        return "Troop Name : " + getTroopName() + " Current Health : " + getCurrentHealth() + " Max Health : " + getMaxHealth() + " Move Space : " + getMoveSpace() + "\nRange: " + getRange()+ " Damage : " + getDamage() + " Alive : " + getStatus() + " Buy Value : " + getBuyValue() + " Sell Value : " + getSellValue();
+    }
+}
