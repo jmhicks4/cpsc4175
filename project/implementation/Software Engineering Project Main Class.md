@@ -1,12 +1,19 @@
+
 import java.io.FileNotFoundException;
+
 import java.util.Scanner;
+
 public class Main
 {
-    public static void main(String args[]) throws FileNotFoundException{
-        boolean gameRunning = true;
-        PlayerData currentPlayer = new PlayerData();
-        currentPlayer = Login.menu();
-        while(gameRunning == true){
+
+public static void main(String args[]) throws FileNotFoundException{
+
+boolean gameRunning = true;
+
+PlayerData currentPlayer = new PlayerData();
+
+currentPlayer = Login.menu();
+while(gameRunning == true){
             System.out.println("What would you like to do?");
             System.out.println("1 : Battle");
             System.out.println("2 : Shop");
