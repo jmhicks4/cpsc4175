@@ -1,0 +1,55 @@
+
+import java.util.List;
+import java.util.ArrayList;
+public class PlayerData
+{
+    public String saveFile;
+    public int moneyValue;
+    public int levelTracker;
+    List<Troops> troopList = new ArrayList<Troops>();
+    public PlayerData(){
+        saveFile = "default";
+        moneyValue = 0;
+        levelTracker = 0;
+    }
+    public PlayerData(String newSaveFile, int newMoneyValue, int newLevelTracker){
+        saveFile = newSaveFile;
+        moneyValue = newMoneyValue;
+        levelTracker = newLevelTracker;
+    }
+    public void setSaveFile(String newSaveFile){
+        saveFile = newSaveFile;
+    }
+    public String getSaveFile(){
+        return saveFile;
+    }
+    public void setMoneyValue(int newMoneyValue){
+        moneyValue =  newMoneyValue;
+    }
+    public int getMoneyValue(){
+        return moneyValue;
+    }
+    public void setLevelTracker(int newLevelTracker){
+        levelTracker = newLevelTracker;
+    }
+    public int getLevelTracker(){
+        return levelTracker;
+    }
+    public void addTroopList(Troops addedTroop){
+        troopList.add(addedTroop);
+    }
+    public void removeTroopList(Troops removeTroop){
+        troopList.remove(removeTroop);
+    }
+    public String printTroop(){
+        String troopString = "";
+        for(int i = 0; i < troopList.size(); i++){
+            troopString += "\n";
+            troopString += troopList.get(i).getTroopName();
+        }
+        return troopString;
+    }
+    public String toString(){
+        return (getSaveFile() + "\n" + getMoneyValue() + "\n" + getLevelTracker() + printTroop()); 
+    }
+}
