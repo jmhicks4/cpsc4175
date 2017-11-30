@@ -1,0 +1,87 @@
+import java.util.Scanner;
+import java.io.File;
+import java.io.FileNotFoundException;
+
+import java.io.PrintWriter;
+public class Login
+{
+
+    public static PlayerData menu() throws FileNotFoundException{
+        boolean validNumber = false;
+        PlayerData defaultCase = new PlayerData();
+        Scanner input = new Scanner(System.in);
+        System.out.println("Which would you like to do?(choose number)");
+        System.out.println("1 : New Game");
+        System.out.println("2 : Load Game");
+        int i = input.nextInt();
+        while(validNumber == false){
+            if(i == 1){
+                System.out.println("Please enter the name of this new game :");
+                Scanner game = new Scanner(System.in);
+                String newGameName = game.nextLine();
+                validNumber = true;
+                return newGame(newGameName);
+            }
+            else if(i == 2){
+                System.out.println("Please enter the name of your save file : ");
+                Scanner load = new Scanner(System.in);
+                String loadGame = load.nextLine();
+                validNumber = true;
+                return loadData(loadGame);
+            }
+            else{
+                System.out.println("Please enter a valid number");
+                i = input.nextInt();
+            }
+        }
+        System.out.println("Failed to load or create data please restart");
+        return defaultCase;
+    }
+
+    public static void saveData(PlayerData newSave) throws FileNotFoundException{
+        PrintWriter out = new PrintWriter(newSave.getSaveFile() + ".txt");
+        out.println(newSave.getSaveFile());
+        out.println(newSave.getMoneyValue());
+        out.println(newSave.getLevelTracker());
+        for(int i = 0; i < newSave.troopList.size(); i++){
+            out.println(newSave.troopList.get(i).getTroopName());
+        }
+        out.close();
+    }
+
+    public static PlayerData loadData(String fileName) throws FileNotFoundException{
+        PlayerData loadedPlayer ; 
+        try{
+            System.out.println("Loading file.");
+            File loadFile = new File(fileName + ".txt");
+            Scanner in = new Scanner(loadFile);
+            loadedPlayer = new PlayerData(in.nextLine(), Integer.parseInt(in.nextLine()), Integer.parseInt(in.nextLine()));
+            while(in.hasNextLine()){
+                loadedPlayer.addTroopList(new Troops(in.nextLine(),"P"));
+            } 
+            System.out.println("File Found.");
+            in.close();
+        }catch (FileNotFoundException e){
+            System.out.println("Could not find file.");
+            loadedPlayer = new PlayerData();
+        }
+        return loadedPlayer;
+    }
+
+    public static PlayerData newGame(String newSaveFile) throws FileNotFoundException{
+        PrintWriter out = new PrintWriter(newSaveFile + ".txt");
+        PlayerData newPlayer = new PlayerData(newSaveFile, 1000, 0);
+        newPlayer.addTroopList(new Troops("footman","P"));
+        newPlayer.addTroopList(new Troops("footman","P"));
+        newPlayer.addTroopList(new Troops("knight","P"));
+        newPlayer.addTroopList(new Troops("longbowman","P"));
+        out.println(newPlayer.getSaveFile());
+        out.println(newPlayer.getMoneyValue());
+        out.println(newPlayer.getLevelTracker());
+        for(int i = 0; i < newPlayer.troopList.size(); i++){
+            out.println(newPlayer.troopList.get(i).getTroopName());
+        }
+        out.close();
+        return newPlayer;
+    }
+}
