@@ -13,18 +13,30 @@ boolean gameRunning = true;
 PlayerData currentPlayer = new PlayerData();
 
 currentPlayer = Login.menu();
+
 while(gameRunning == true){
-            System.out.println("What would you like to do?");
-            System.out.println("1 : Battle");
-            System.out.println("2 : Shop");
-            System.out.println("3 : Save");
-            System.out.println("4 : Quit Game");
-            Scanner command = new Scanner(System.in);
-            int currentCommand = command.nextInt();
-            if(currentCommand == 1){
-                Battle battle = new Battle(currentPlayer);
-                battle.setEnemyTroops();
-                battle.setPlayerTroops();
+
+System.out.println("What would you like to do?");
+
+System.out.println("1 : Battle");
+
+System.out.println("2 : Shop");
+
+System.out.println("3 : Save");
+
+System.out.println("4 : Quit Game");
+
+Scanner command = new Scanner(System.in);
+
+int currentCommand = command.nextInt();
+
+if(currentCommand == 1){
+
+Battle battle = new Battle(currentPlayer);
+
+battle.setEnemyTroops();
+
+battle.setPlayerTroops();
                 
                 while(battle.checkFinished() != "Player won!" || battle.checkFinished() != "Enemy won!"){
                     battle.printBattleField();
