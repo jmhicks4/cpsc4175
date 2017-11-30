@@ -1,0 +1,83 @@
+import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.List;
+public class Shop
+{
+    public static PlayerData shopWindow(PlayerData playerTroops){
+        boolean leavingShop = false;
+        System.out.println("Welcome to the shop");
+        Scanner choice = new Scanner(System.in);
+        while(leavingShop == false){
+            System.out.println("Your Money : " + playerTroops.getMoneyValue());
+            System.out.println("What would you like to do?");
+            System.out.println("1 : Buy");
+            System.out.println("2 : Sell");
+            System.out.println("3 : Exit Shop");
+            System.out.printf("%-20s%10s", "Buy" , "Sell");
+            System.out.println();
+            int playerChoice = choice.nextInt();
+            if(playerChoice == 1){
+                if(playerTroops.troopList.size() < 10){
+                    playerTroops = buyTroop(playerTroops);
+                }
+                else{
+                    System.out.println("The max number of troops you can have is ten");
+                }
+            }
+            else if(playerChoice == 2){
+                if(playerTroops.troopList.size() > 4){
+                    playerTroops = sellTroop(playerTroops);
+                }
+                else{
+                    System.out.println("The minimum number of troops you can have is four.");
+                }
+            }
+            else if(playerChoice == 3){
+                leavingShop = true;
+            }
+        }
+        return playerTroops;
+    }
+    public static PlayerData buyTroop(PlayerData playerTroops){
+        Scanner playerChoice = new Scanner(System.in);
+        List<Troops> buyTroops = new ArrayList<Troops>();
+        System.out.println("Your money : " + playerTroops.getMoneyValue());
+        buyTroops.add(new Troops("footman","P"));
+        buyTroops.add(new Troops("longbowman","P"));
+        buyTroops.add(new Troops("knight","P"));
+        System.out.println("What would you like to buy?");
+        for(int i = 0; i < buyTroops.size(); i++){
+            System.out.println(i + " : " + buyTroops.get(i).toString());
+        }
+        int choice = playerChoice.nextInt();
+        if(choice < buyTroops.size() && choice >= 0){
+            if(buyTroops.get(choice).getBuyValue() <= playerTroops.getMoneyValue()){
+                playerTroops.addTroopList(buyTroops.get(choice));
+                playerTroops.setMoneyValue(playerTroops.getMoneyValue() - buyTroops.get(choice).getBuyValue()); 
+            }
+            else{
+                System.out.println("You do not have enough money for " + buyTroops.get(choice).getTroopName());
+            }
+        }
+        else{
+            System.out.println("That is not a valid choice");
+        }
+        return playerTroops;
+    }
+    public static PlayerData sellTroop(PlayerData playerTroops){
+        Scanner playerChoice = new Scanner(System.in);
+        System.out.println("What would you like to sell?");
+        for(int i = 0; i < playerTroops.troopList.size(); i++){
+            System.out.println(i + " : " + playerTroops.troopList.get(i).toString());
+        }
+        int choice = playerChoice.nextInt();
+        if(choice < playerTroops.troopList.size() && choice >= 0){
+            playerTroops.setMoneyValue(playerTroops.getMoneyValue() + playerTroops.troopList.get(choice).getSellValue());
+            playerTroops.troopList.remove(choice);
+        }
+        else{
+            System.out.println("That is not a valid choice");
+        }
+        return playerTroops;
+    }
+}
