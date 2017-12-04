@@ -27,7 +27,11 @@ public class Login
                 Scanner load = new Scanner(System.in);
                 String loadGame = load.nextLine();
                 validNumber = true;
-                return loadData(loadGame);
+                PlayerData loadedPlayerData = loadData(loadGame);
+                if (loadedPlayerData==null){
+                    continue;
+                }
+                return loadedPlayerData;
             }
             else{
                 System.out.println("Please enter a valid number");
@@ -63,7 +67,7 @@ public class Login
             in.close();
         }catch (FileNotFoundException e){
             System.out.println("Could not find file.");
-            loadedPlayer = new PlayerData();
+            loadedPlayer = null;
         }
         return loadedPlayer;
     }
