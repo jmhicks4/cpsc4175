@@ -1,0 +1,49 @@
+
+import java.io.FileNotFoundException;
+import static org.junit.Assert.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+/**
+ * The test class BattleTest.
+ *
+ * @author  (your name)
+ * @version (a version number or a date)
+ */
+public class BattleTest
+{
+    private PlayerData playerDa1;
+    private Battle battle1;
+
+    /**
+     * Default constructor for test class BattleTest
+     */
+    public BattleTest()
+    {
+    }
+
+    /**
+     * Sets up the test fixture.
+     *
+     * Called before every test case method.
+     */
+    @Before
+    public void setUp()throws FileNotFoundException
+    {
+        
+        
+        playerDa1 = Login.loadData("a");
+        battle1 = new Battle(playerDa1);
+    }
+
+    /**
+     * Tears down the test fixture.
+     *
+     * Called after every test case method.
+     */
+    @After
+    public void tearDown()
+    {
+    }
+}
