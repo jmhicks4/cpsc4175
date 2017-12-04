@@ -1,0 +1,126 @@
+
+import static org.junit.Assert.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+/**
+ * The test class PlayerDataTest.
+ *
+ * @author  (your name)
+ * @version (a version number or a date)
+ */
+public class PlayerDataTest
+{
+    private PlayerData playerDa1;
+    private Troops troops1;
+    private Troops troops2;
+    private Troops troops3;
+
+    /**
+     * Default constructor for test class PlayerDataTest
+     */
+    public PlayerDataTest()
+    {
+    }
+
+    /**
+     * Sets up the test fixture.
+     *
+     * Called before every test case method.
+     */
+    @Before
+    public void setUp()
+    {
+        playerDa1 = new PlayerData();
+        troops1 = new Troops();
+        troops2 = new Troops();
+        troops3 = new Troops("knight", "P");
+    }
+
+    /**
+     * Tears down the test fixture.
+     *
+     * Called after every test case method.
+     */
+    @After
+    public void tearDown()
+    {
+    }
+
+    @Test
+    public void defaltConstructorTest()
+    {
+        PlayerData playerDa1 = new PlayerData();
+        assertEquals("default", playerDa1.getSaveFile());
+        assertEquals(0, playerDa1.getMoneyValue());
+        assertEquals(0, playerDa1.getLevelTracker());
+    }
+
+    @Test
+    public void customConstructorTest()
+    {
+        PlayerData playerDa1 = new PlayerData("test", 400, 0);
+        assertEquals("test", playerDa1.getSaveFile());
+        assertEquals(400, playerDa1.getMoneyValue());
+        assertEquals(0, playerDa1.getLevelTracker());
+    }
+
+    @Test
+    public void saveNameTest()
+    {
+        assertEquals("default", playerDa1.getSaveFile());
+        playerDa1.setSaveFile("test");
+        assertEquals("test", playerDa1.getSaveFile());
+    }
+
+    @Test
+    public void moneyTest()
+    {
+        assertEquals(0, playerDa1.getMoneyValue());
+        playerDa1.setMoneyValue(300);
+        assertEquals(300, playerDa1.getMoneyValue());
+    }
+
+    @Test
+    public void levelTest()
+    {
+        assertEquals(0, playerDa1.getLevelTracker());
+        playerDa1.setLevelTracker(4);
+        assertEquals(4, playerDa1.getLevelTracker());
+    }
+
+    @Test
+    public void addTroopTest()
+    {
+        playerDa1.addTroopList(troops1);
+        playerDa1.addTroopList(troops2);
+        playerDa1.addTroopList(troops3);
+        assertEquals("PK", troops3.getPlayer());
+        assertEquals("PS", troops2.getPlayer());
+        assertEquals("PS", troops1.getPlayer());
+        java.lang.String string1 = playerDa1.printTroop();
+        assertEquals("\nsoldier\nsoldier\nknight", string1);
+    }
+
+    @Test
+    public void removeTroopTest()
+    {
+        playerDa1.addTroopList(troops1);
+        playerDa1.addTroopList(troops2);
+        playerDa1.addTroopList(troops3);
+        java.lang.String string1 = playerDa1.printTroop();
+        assertEquals("\nsoldier\nsoldier\nknight", string1);
+        playerDa1.removeTroopList(troops2);
+        java.lang.String string2 = playerDa1.printTroop();
+        assertEquals("\nsoldier\nknight", string2);
+        playerDa1.removeTroopList(troops3);
+        java.lang.String string3 = playerDa1.printTroop();
+        assertEquals("\nsoldier", string3);
+        playerDa1.removeTroopList(troops1);
+        java.lang.String string4 = playerDa1.printTroop();
+        assertEquals("", string4);
+    }
+}
+
+
