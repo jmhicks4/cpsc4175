@@ -1,0 +1,321 @@
+import java.util.Random;
+
+/**
+ * This class stores the battle data and handles how things happen inthe battle. 
+ */
+public class Battle 
+{
+    Troops[][] battleField;
+    PlayerData playersData;
+    Troops[] enemyTroops;
+    /**
+     * Creates a new Battle.
+     * Requires the player data.
+     */
+    public Battle( PlayerData playerData){
+        playersData = playerData;
+        battleField = new Troops[12][12];
+    }
+
+    /**
+     * Creates a random number of enemy units >=1 and <= player troups number +1 and places them on the battle field.
+     */
+    public void setEnemyTroops(){
+        Random r =new Random();
+        int enemyNumber = r.nextInt((playersData.troopList.size()+1))+1;
+        enemyTroops = new Troops[enemyNumber];
+        for( int i =0; i < enemyNumber; i++){
+            int enemyType = r.nextInt(3);
+            switch(enemyType){
+                case 0 :
+                enemyTroops[i] = new Troops("footman","E");
+                break;
+                case 1 :
+                enemyTroops[i] = new Troops("knight","E");
+                break;
+                case 2 :
+                enemyTroops[i] = new Troops("longbowman","E");
+                break;
+            }
+            int x = r.nextInt(12);
+            int y = r.nextInt(12);
+            while(!(battleField[x][y] == null)){
+                x = r.nextInt(12);
+                y = r.nextInt(12);
+            }
+            battleField[x][y] = enemyTroops[i];
+            enemyTroops[i].setX(x);
+            enemyTroops[i].setY(y);
+        }
+
+    }
+
+    /**
+     * Places the player troops on the battle field.
+     */
+    public void setPlayerTroops(){
+        Random r =new Random();
+        for( int i =0; i < playersData.troopList.size(); i++){
+            playersData.troopList.get(i).setStatus(true);
+            playersData.troopList.get(i).setCurrentHealth(playersData.troopList.get(i).getMaxHealth());
+            int x = r.nextInt(12);
+            int y = r.nextInt(12);
+            while(!(battleField[x][y] == null)){
+                x = r.nextInt(12);
+                y = r.nextInt(12);
+            }
+            battleField[x][y] = playersData.troopList.get(i);
+            playersData.troopList.get(i).setX(x);
+            playersData.troopList.get(i).setY(y);
+        }
+    }
+
+    /**
+     * Prints out the battle field.
+     */
+    public void printBattleField(){
+        System.out.println("");
+        for( int y =0; y <battleField[0].length ; y++){
+            System.out.printf("%6s",y);
+        }
+        System.out.println();
+        for( int x =0; x <battleField.length ; x++){
+            System.out.printf("%2s",x);
+            for( int y =0; y <battleField[x].length ; y++){
+                if (!(battleField[y][x]==null)){
+                    System.out.printf("[%2s]  ",battleField[y][x].getPlayer());
+                }
+                else{
+                    System.out.printf("[%2s]  ","");
+                }
+
+            }
+            System.out.println();
+        }
+    }
+
+    /**
+     * Checks if the battle is over.
+     * Returns a String represening who won. "Player won!" or "Enemy won!"
+     * If the battle is not over it returns a empty string. ""
+     */
+    public String checkFinished(){
+        boolean enemyCheck = false;
+        boolean playerCheck = false;
+        for(int i = 0; i < enemyTroops.length; i ++){
+            if(enemyTroops[i].getStatus()){
+                enemyCheck = true;
+                continue;
+            }
+        }
+        for(int i = 0; i < playersData.troopList.size(); i ++){
+            if(playersData.troopList.get(i).getStatus()){
+                playerCheck = true;
+                continue;
+            }
+        }
+        if(!enemyCheck){
+            playersData.setMoneyValue(playersData.getMoneyValue()+100);
+            return "Player won!";
+        }
+        else if(!playerCheck){
+            return "Enemy won!";
+        }
+        else{
+            return "";
+        }
+    }
+
+    /**
+     * Returns the troop in the BattleField at x and y.
+     * Returns null if the spot is empty.
+     */
+    public Troops selectUnit(int x, int y){
+        if(battleField[x][y] != null){
+            return battleField[x][y];
+        }
+        else{
+            System.out.println("There isn't a troop there");
+            return null;
+        }
+    }
+
+    /**
+     * Moves the given troop to the location on the battle field given by x and y if it is a valid location.
+     * Returns a string representing what happened. 
+     */
+    public String move(int x, int y, Troops selectedTroop){
+        String results = "";
+        if(selectedTroop != null){
+            if(!(selectedTroop.getMoved())){
+                //int test1 = java.lang.Math.abs(x-selectedTroop.getX());
+                if(!(java.lang.Math.abs(x-selectedTroop.getX()) > selectedTroop.getMoveSpace())){
+                    //int test2 = java.lang.Math.abs(y-selectedTroop.getY());
+                    if(!(java.lang.Math.abs(y-selectedTroop.getY()) > selectedTroop.getMoveSpace())){
+                        if(battleField[x][y] == null){
+                            battleField[selectedTroop.getX()][selectedTroop.getY()] = null;
+                            battleField[x][y] = selectedTroop;
+                            selectedTroop.setX(x);
+                            selectedTroop.setY(y);
+                            selectedTroop.setMoved(true);
+                            results = battleField[x][y].getPlayer()+ " moved to X:"+x+"Y:"+y+"!";
+                        }
+                        else{
+                            results ="There is someone in that spot";
+                        }
+                    } 
+                    else{
+                        results ="This move did not have a valid y";
+                    }
+                }
+                else{
+                    results ="This move did not have a valid x";
+                }
+            }
+            else{
+                results ="This troop has already moved";
+            }
+        }
+        else{
+            results ="There is no selected troop";
+        }
+        return results;
+    }
+
+    /**
+     * Makes the troop at the (x, y) cordinates take damage from the given troop if there is a valid troup there and it is in range.
+     * Returns a string representing the results of the attack.
+     */
+    public String attack(int x, int y, Troops selectedTroop){
+        String results = "";
+        if(!(selectedTroop.getAttacked())){
+            if(!(java.lang.Math.abs(x-selectedTroop.getX()) > selectedTroop.getRange())){
+                if(!(java.lang.Math.abs(y - selectedTroop.getY()) > selectedTroop.getRange())){
+                    if(battleField[x][y] != null){
+                        // suicide prevention
+                        if(0!=Character.compare(selectedTroop.getPlayer().charAt(0),battleField[x][y].getPlayer().charAt(0))){
+
+                            battleField[x][y].setCurrentHealth(battleField[x][y].getCurrentHealth() - selectedTroop.getDamage());
+                            selectedTroop.setAttacked(true);
+                            results = battleField[x][y].getPlayer()+ " took " +selectedTroop.getDamage()+" damge!\n";
+                            if(battleField[x][y].getCurrentHealth() <= 0){
+                                results += battleField[x][y].getPlayer()+" is dead!\n";
+                                battleField[x][y].setStatus(false);
+                                battleField[x][y] = null;
+                            }
+                        }
+                        else{
+                            results = ("These troops are on the same team!\n");
+                        }
+                    }
+                    else{
+                        results = ("That space is empty!\n");
+                    }
+                }
+                else{
+                    results = ("This y is not in range!\n");
+                }
+            }
+            else{
+                results = ("This x is not in range!\n");
+            }
+        }
+        else{
+            results = ("This troop has already attacked!\n");
+        }
+        return results;
+    }
+
+    /**
+     * Call at the end of a turn to reset the troops attack and move status.
+     */
+    public void endTurn(){
+        for(int i = 0; i < playersData.troopList.size(); i++){
+            playersData.troopList.get(i).setAttacked(false);
+            playersData.troopList.get(i).setMoved(false);
+
+        }
+        for(int i = 0; i < enemyTroops.length; i++){
+            enemyTroops[i].setAttacked(false);
+            enemyTroops[i].setMoved(false);
+        }
+    }
+
+    /**
+     * executes the enemy's turn
+     * Returns a string that represents the results
+     */
+    public String enemyTurn(){
+        String results = "";
+        for (int i =0; i <enemyTroops.length;i++){
+            if(enemyTroops[i].getStatus()){
+                Troops targetTroop =null;
+                for (int x = enemyTroops[i].getX(); x<=enemyTroops[i].getX()+enemyTroops[i].getMoveSpace()+enemyTroops[i].getRange(); x++){
+                    for (int y = enemyTroops[i].getY(); y<=enemyTroops[i].getY()+enemyTroops[i].getMoveSpace()+enemyTroops[i].getRange(); y++){
+                        if(!(x<0 || x>11)&&!(y<0 || y>11)){
+                            if (battleField[x][y] != null){
+                                if(0==Character.compare(battleField[x][y].getPlayer().charAt(0),"P".charAt(0))){
+                                    targetTroop=battleField[x][y];
+                                }
+                            }
+                        }
+                        int oppositeX = enemyTroops[i].getX()-(x-enemyTroops[i].getX());
+                        int oppositeY = enemyTroops[i].getY()-(y-enemyTroops[i].getY());
+                        if(!(oppositeX<0 || oppositeX>11)&&!(oppositeY<0 || oppositeY>11)){
+
+                            if (battleField[oppositeX][oppositeY] != null){
+                                if(0==Character.compare(battleField[oppositeX][oppositeY].getPlayer().charAt(0),"P".charAt(0))){
+                                    targetTroop=battleField[oppositeX][oppositeY];
+                                }
+                            }
+                        }
+
+                        if(!(x<0 || x>11)&&!(oppositeY<0 || oppositeY>11)){
+                            if (battleField[x][oppositeY] != null){
+                                if(0==Character.compare(battleField[x][oppositeY].getPlayer().charAt(0),"P".charAt(0))){
+                                    targetTroop=battleField[x][oppositeY];
+                                }
+                            }
+                        }
+
+                        if(!(oppositeX<0 || oppositeX>11)&&!(y<0 || y>11)){
+
+                            if (battleField[oppositeX][y] != null){
+                                if(0==Character.compare(battleField[oppositeX][y].getPlayer().charAt(0),"P".charAt(0))){
+                                    targetTroop=battleField[oppositeX][y];
+                                }
+                            }
+                        }
+
+                    }
+                }
+                if(targetTroop !=null){
+                    int xDistanceFromTarget = targetTroop.getX() - enemyTroops[i].getX();
+                    int xRangeDiference = java.lang.Math.abs(xDistanceFromTarget) - enemyTroops[i].getMoveSpace();
+                    int newX = enemyTroops[i].getX();
+                    if(xDistanceFromTarget>0){
+                        newX=enemyTroops[i].getX()+(xDistanceFromTarget - xRangeDiference);
+                    }
+                    else if(xDistanceFromTarget<0){
+                        newX=enemyTroops[i].getX()+(xDistanceFromTarget + xRangeDiference);
+                    }
+                    // might be a bug in the math for newY
+                    int yDistanceFromTarget = targetTroop.getY() - enemyTroops[i].getY();
+                    int yRangeDiference = java.lang.Math.abs(yDistanceFromTarget) - enemyTroops[i].getMoveSpace();
+                    int newY = enemyTroops[i].getY();
+                    if(yDistanceFromTarget>0){
+                        newY=enemyTroops[i].getY()+(yDistanceFromTarget - yRangeDiference);
+                    }
+                    else if(yDistanceFromTarget<0){
+                        newY=enemyTroops[i].getY()+(yDistanceFromTarget - yRangeDiference);
+                    }
+                    results += move(newX,newY,enemyTroops[i])+"\n";
+                    results += attack(targetTroop.getX(),targetTroop.getY(),enemyTroops[i])+"\n";
+
+                }
+            }
+        }
+        endTurn();
+        return results;
+    }
+}
