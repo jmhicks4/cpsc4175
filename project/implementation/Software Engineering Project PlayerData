@@ -36,7 +36,11 @@ public class PlayerData
         return levelTracker;
     }
     public void addTroopList(Troops addedTroop){
+        if ((addedTroop.getPlayer() == null)||(0!=Character.compare(addedTroop.getPlayer().charAt(0),"P".charAt(0)))){
+            addedTroop.setPlayer(("P"+addedTroop.getPlayer()));
+        }
         troopList.add(addedTroop);
+        
     }
     public void removeTroopList(Troops removeTroop){
         troopList.remove(removeTroop);
