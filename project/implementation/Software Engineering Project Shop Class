@@ -13,7 +13,6 @@ public class Shop
             System.out.println("1 : Buy");
             System.out.println("2 : Sell");
             System.out.println("3 : Exit Shop");
-            System.out.printf("%-20s%10s", "Buy" , "Sell");
             System.out.println();
             int playerChoice = choice.nextInt();
             if(playerChoice == 1){
