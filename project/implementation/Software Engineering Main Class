@@ -18,8 +18,8 @@ public class Main
                 Battle battle = new Battle(currentPlayer);
                 battle.setEnemyTroops();
                 battle.setPlayerTroops();
-                
-                while(battle.checkFinished() != "Player won!" || battle.checkFinished() != "Enemy won!"){
+                boolean battleFinished =false;
+                while(!battleFinished){
                     battle.printBattleField();
                     System.out.println("What would you like to do?");
                     System.out.println("1 : Move");
@@ -34,7 +34,9 @@ public class Main
                         int y = command.nextInt();
                         //battle.printBattleField();
                         Troops selectedUnit = battle.selectUnit(x, y);
-                        selectedUnit.gamePlayPrint();
+                        if(selectedUnit != null){
+                            selectedUnit.gamePlayPrint();
+                        }
                         System.out.println("Type Q to cancel anything else to continue. ");
                         String cancel = command.next();
                         if(cancel.equals("q") || cancel.equals("Q")){
@@ -54,7 +56,9 @@ public class Main
                         System.out.println("y :");
                         int y = command.nextInt();
                         Troops selectedUnit = battle.selectUnit(x, y);
-                        selectedUnit.gamePlayPrint();
+                        if(selectedUnit != null){
+                            selectedUnit.gamePlayPrint();
+                        }
                         System.out.println("Type Q to cancel anything else to continue. ");
                         String cancel = command.next();
                         if(cancel.equals("q") || cancel.equals("Q")){
@@ -66,30 +70,36 @@ public class Main
                         System.out.println("y :");
                         y = command.nextInt();
                         Troops selectedEnemyUnit = battle.selectUnit(x, y);
-                        selectedEnemyUnit.gamePlayPrint();
+                        if(selectedEnemyUnit != null){
+                            selectedEnemyUnit.gamePlayPrint();
+                        }
                         System.out.println("Type Q to cancel anything else to continue. ");
                         cancel = command.next();
                         if(cancel.equals("q") || cancel.equals("Q")){
                             continue ;
                         }
-                        battle.attack(x, y, selectedUnit);
+                        System.out.println(battle.attack(x, y, selectedUnit));
                         selectedEnemyUnit.gamePlayPrint();
                     }
                     else if(battleCommand == 3){
                         battle.endTurn();
+                        System.out.println(battle.enemyTurn());
                     }
                     else{
                         System.out.println("Please enter a valid command");
                     }
+                    //String test3 = battle.checkFinished();
+
+                    battleFinished= !(battle.checkFinished().equals( ""));
                 }
             }
-            if(currentCommand == 2){
+            else if(currentCommand == 2){
                 currentPlayer = Shop.shopWindow(currentPlayer);
             }
-            if(currentCommand == 3){
+            else if(currentCommand == 3){
                 Login.saveData(currentPlayer);
             }
-            if(currentCommand == 4){
+            else if(currentCommand == 4){
                 gameRunning = false;
             }
             else{
