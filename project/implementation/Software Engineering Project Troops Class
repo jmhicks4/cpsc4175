@@ -1,4 +1,5 @@
 
+
 public class Troops
 {
     public String troopName;
@@ -26,6 +27,7 @@ public class Troops
         status = true;
         buyValue = 100;
         sellValue = 100;
+        playerTag = "S";
     }
     public Troops(String name,String tag){
         switch(name){
@@ -90,6 +92,7 @@ public class Troops
     public String getTroopName(){
         return troopName;
     }
+   
     public void setCurrentHealth(int newCurrentHealth){
         currentHealth = newCurrentHealth;
     }
@@ -182,6 +185,6 @@ public class Troops
         System.out.println();
     }
     public String toString(){
-        return "Troop Name : " + getTroopName() + " Current Health : " + getCurrentHealth() + " Max Health : " + getMaxHealth() + " Move Space : " + getMoveSpace() + "\nRange: " + getRange()+ " Damage : " + getDamage() + " Alive : " + getStatus() + " Buy Value : " + getBuyValue() + " Sell Value : " + getSellValue();
+        return "Troop Name : " + getTroopName() +  " Max Health : " + getMaxHealth() + " Move Space : " + getMoveSpace() + "\nRange: " + getRange()+ " Damage : " + getDamage() + " Buy Value : " + getBuyValue() + " Sell Value : " + getSellValue();
     }
 }
